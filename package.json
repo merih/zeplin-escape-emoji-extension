@@ -13,6 +13,7 @@
     "email": "merihakar@gmail.com"
   },
   "repository": "github:merih/zeplin-escape-emoji-extension",
+  "license": "MIT",
   "zeplin": {
     "displayName": "Escape Emoji",
     "projectTypes": [

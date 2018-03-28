@@ -1,4 +1,4 @@
 module.exports = {
-    extends: "@zeplin/eslint-config/browser"
+    extends: "@zeplin/eslint-config"
 };
 
