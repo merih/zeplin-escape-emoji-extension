@@ -1,10 +1,18 @@
 import emojiRegex from "emoji-regex";
 
+const HIGH_SURROGATE_MIN = 0xD800;
+const HIGH_SURROGATE_MAX = 0xDBFF;
+const LOW_SURROGATE_MIN = 0xDC00;
+const CODE_POINT_MAX = 0xFFFF;
+
+const SURROGATE_RANGE = HIGH_SURROGATE_MAX - HIGH_SURROGATE_MIN + 1;
+const HEX = 16;
+
 function escape(codePoint) {
-    return codePoint.toString(16).toUpperCase();
+    return codePoint.toString(HEX).toUpperCase();
 }
 
-function layer(context, selectedLayer) {
+function layer(_, selectedLayer) {
     if (selectedLayer.type !== "text") {
         return;
     }
@@ -13,26 +21,27 @@ function layer(context, selectedLayer) {
         return;
     }
 
-    var escapedString = selectedLayer.content.replace(emojiRegex(), function (emoji) {
-        return Array.from(emoji, function (part) {
-            var first = part.charCodeAt(0);
+    const escapedString = selectedLayer.content.replace(emojiRegex(), emoji =>
+        [...emoji].map(part => {
+            const highSurrogate = part.charCodeAt(0);
 
             if (part.length === 1) {
-                return `\\u{${escape(first)}}`;
+                return `\\u{${escape(highSurrogate)}}`;
             }
 
-            var second = part.charCodeAt(1);
-            var codePoint = (first - 0xD800) * 0x400 + second - 0xDC00 + 0x10000;
+            const lowSurrogate = part.charCodeAt(1);
+            const codePoint = (highSurrogate - HIGH_SURROGATE_MIN) * SURROGATE_RANGE +
+                lowSurrogate - LOW_SURROGATE_MIN + CODE_POINT_MAX + 1;
 
             return `\\u{${escape(codePoint)}}`;
-        }).join("");
-    });
+        }).join("")
+    );
 
     return {
         code: `const text = "${escapedString}";`,
         language: "javascript"
-    }
-};
+    };
+}
 
 export default {
     layer

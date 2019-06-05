@@ -1,6 +1,6 @@
 {
   "name": "zeplin-escape-emoji-extension",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Escapes the emoji characters inside text layers as Unicode code point escapes.",
   "scripts": {
     "start": "zem start",
@@ -21,11 +21,11 @@
     ]
   },
   "dependencies": {
-    "emoji-regex": "^6.5.1"
+    "emoji-regex": "^8.0.0"
   },
   "devDependencies": {
-    "@zeplin/eslint-config": "^1.2.2",
-    "eslint": "^4.19.1",
-    "zem": "^0.1.2"
+    "@zeplin/eslint-config": "^2.2.0",
+    "eslint": "^5.16.0",
+    "zem": "^0.4.3"
   }
 }
